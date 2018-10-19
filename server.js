@@ -10,6 +10,7 @@ const Drink = require("./models/Drink");
 const Food = require("./models/Food");
 const Order = require("./models/Order");
 const User = require("./models/User");
+const resolvers = require('./resolvers')
 
 const filePath = path.join(__dirname, "typeDefs.gql");
 console.log(filePath)
@@ -26,6 +27,7 @@ mongoose.connect(
 
 const server = new ApolloServer({ 
     typeDefs,
+    resolvers,
     context:{
         Drink,
         Food,
