@@ -1,4 +1,8 @@
-# Burger Queen
+# Burger Queen App
+
+Sketch de baja fidelidad:
+
+![sketch-burger](https://i.imgflip.com/2kgh9h.gif)
 
 ## Preámbulo
 
