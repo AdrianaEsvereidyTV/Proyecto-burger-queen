@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "deploy": "npm run build && now --public && now alias",
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0-rc.1",
-    "apollo-boost": "^0.1.16",
+    "apollo-boost": "^0.1.17",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.17",
     "vue-apollo": "^3.0.0-beta.25",

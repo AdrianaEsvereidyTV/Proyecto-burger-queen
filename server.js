@@ -8,6 +8,8 @@ const path = require ("path");
 
 const Drink = require("./models/Drink");
 const Food = require("./models/Food");
+const Extra = require("./models/Extra");
+const Side = require("./models/Side")
 const Order = require("./models/Order");
 const User = require("./models/User");
 const resolvers = require('./resolvers')
@@ -31,11 +33,13 @@ const server = new ApolloServer({
     context:{
         Drink,
         Food,
+        Extra,
+        Side,
         Order,
         User
     }
  });
 
-server.listen({port: process.env.PORT || 4000}).then(({url}) => {
+server.listen(4000).then(({url}) => {
   console.log("Servidor funcionando", url);
 });

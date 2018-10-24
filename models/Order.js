@@ -11,6 +11,15 @@ const OrderSchema = new mongoose.Schema({
         required: true,
         ref: "Drink"
     },
+    extra:{
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "Extra"
+    },
+    side:{
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "Side"
+    },
+
     total: {
         type: Number,
         required: true,
@@ -25,6 +34,7 @@ const OrderSchema = new mongoose.Schema({
         required: true,
         ref: "User"
     }
+
 });
 
 module.exports = mongoose.model("Order", OrderSchema);
