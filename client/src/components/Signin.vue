@@ -5,9 +5,11 @@
         <v-card color="succsess">
           <v-container>
            <v-form @submit.prevent="handleSigninUser">
+             <center>
               <div class="mt-4">
                 <img class="img-fluid" src="https://image.ibb.co/gBCYLq/BQ-logo.png" id="icon" width="200" alt="logo-BQ"/>
               </div>
+             </center>
               <v-layout row mt-3>
                 <v-flex xs12>
                   <v-text-field :rules="usernameRules" prepend-icon="face" type="text" v-model="usuario" label="Usuario" required>
@@ -69,3 +71,9 @@ export default {
   }
 };
 </script>
+<style>
+img{
+  text-align: center;
+  height: 200px;
+}
+</style>
