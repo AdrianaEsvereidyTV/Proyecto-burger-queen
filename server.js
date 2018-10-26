@@ -1,45 +1,47 @@
-const { ApolloServer, gql } = require("apollo-server");
-// Conecta con la base de datos
-const mongoose= require("mongoose");
-require("dotenv").config({path: "variables.env"}); 
+const { ApolloServer, gql } = require('apollo-server')
+//Conecxión con la base de datos
+const moongose = require('mongoose');
+require('dotenv').config({ path: 'variables.env' });
+const fs = require('fs');
+const path = require ('path');
 
-const fs = require("fs");
-const path = require ("path");   
-
-const Drink = require("./models/Drink");
-const Food = require("./models/Food");
-const Extra = require("./models/Extra");
-const Side = require("./models/Side")
-const Order = require("./models/Order");
-const User = require("./models/User");
+const Drink = require('./models/Drink');
+const Food = require('./models/Food');
+const Side = require('./models/Side');
+const Extra = require('./models/Extra');
+const Order = require('./models/Order');
+const User = require('./models/User');
 const resolvers = require('./resolvers')
 
-const filePath = path.join(__dirname, "typeDefs.gql");
-console.log(filePath)
-const typeDefs = fs.readFileSync(filePath,"utf-8")
- 
-//Se utiliza el método connect y se pasa
-mongoose.connect(
-    process.env.MONGO_URI,
-    { useNewUrlParser: true}
+const filePath = path.join(__dirname,'typeDefs.gql');
 
-)
-.then(()=> console.log("Base de datos conectada"))
-.catch(error => console.log(error));
+const typeDefs = fs.readFileSync(filePath, 'utf-8');
 
-const server = new ApolloServer({ 
+moongose
+    .connect
+    (process.env.MONGO_URI,
+    { useNewUrlParser: true }
+    )
+    .then(() => console.log('Base de datos conectada'))
+    .catch(error => console.log(error));
+
+const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context:{
+    context: {
         Drink,
         Food,
-        Extra,
-        Side,
+        User,
         Order,
-        User
+        Side,
+        Extra
     }
- });
-
-server.listen(4000).then(({url}) => {
-  console.log("Servidor funcionando", url);
 });
+
+
+//Levantando el servidor
+server.listen({port: process.env.PORT ||4000}).then(({ url }) => {
+    console.log('Servidor activo', url);
+}).catch((error) => {
+    console.log('error');
+})

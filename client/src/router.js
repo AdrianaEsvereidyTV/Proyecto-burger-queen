@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './components/Home.vue'
-import Signin from './components/Signin.vue'
-import Local from './components/Local.vue'
+import SignIn from './components/SignIn.vue'
+import Order from './components/Order.vue'
+import SignUp from './components/SignUp.vue'
 
 Vue.use(Router)
 
@@ -18,12 +19,17 @@ export default new Router({
     {
       path: '/signin',
       name: 'signin',
-      component: Signin
+      component: SignIn
     },
     {
-      path: '/local',
-      name: 'local',
-      component: Local
+      path: '/order',
+      name: 'order',
+      component: Order
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: SignUp
     },
   ]
-})
+});

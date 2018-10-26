@@ -22,8 +22,7 @@ const OrderSchema = new mongoose.Schema({
 
     total: {
         type: Number,
-        required: true,
-        trim: true
+        required: true
     },
     client:{
         type: String,
@@ -34,7 +33,6 @@ const OrderSchema = new mongoose.Schema({
         required: true,
         ref: "User"
     }
-
 });
 
 module.exports = mongoose.model("Order", OrderSchema);

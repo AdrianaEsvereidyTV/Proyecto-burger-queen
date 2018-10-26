@@ -4,7 +4,7 @@
       <v-flex xs12 sm8 offset-sm2>
         <v-card color="succsess">
           <v-container>
-           <v-form @submit.prevent="handleSigninUser">
+           <v-form @submit.prevent="handleSignupUser">
               <div class="mt-4">
                 <img class="img-fluid" src="https://image.ibb.co/gBCYLq/BQ-logo.png" id="icon" width="200" alt="logo-BQ"/>
               </div>
@@ -21,10 +21,15 @@
                 </v-flex>
               </v-layout>
               <v-layout row mt-3>
+                <v-flex xs12>
+                  <v-text-field :rules="passwordRules" prepend-icon="lock" label="Confirmar contraseña" type="password" v-model="passwordConfirmation"></v-text-field>
+                </v-flex>
+              </v-layout>
+              <v-layout row mt-3>
                 <v-flex xs12>  
-                  <v-btn color="info" to="/order">Iniciar Sesión</v-btn>
-                  <p class="mt-2">¿No tienes cuenta?
-                    <router-link to="/signup">Regístrate</router-link>
+                  <v-btn color="info" to="/order">Registrar</v-btn>
+                  <p class="mt-2">¿Ya tienes cuenta?
+                    <router-link to="/signin">Ingresa</router-link>
                   </p>
                 </v-flex>
               </v-layout>
@@ -38,11 +43,14 @@
 
 <script>
 export default {
-  name: "Signin",
+  name: "Signup",
   data() {
     return {
+      validForm: true,
       username: "",
+      email: "",
       password: "",
+      passwordConfirmation: "",
       // Validación de campos de formulario
       usernameRules: [
         // comprobar que se ingrese un string en el input
@@ -54,17 +62,21 @@ export default {
       passwordRules: [
         password => !!password || "Completa este campo",
         password =>
-          password.length > 5 || "La contraseña debe tener más de 5 caracteres"
+          password.length > 5 || "La contraseña debe tener más de 5 caracteres",
+        confirmation =>
+          confirmation === this.password || "Las contraseñas deben ser iguales"
       ]
     };
   },
   methods: {
-    handleSignInUser() {
-      console.log("hollaaa");
-      this.$store.dispatch("signinUser", {
-        username: this.usuario,
-        password: this.contrasena
-      });
+    handleSignUpUser() {
+      // Si no se validan los campos del formulario, no se realiza la petición de la mutación signupUser
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch("signUpUser", {
+          username: this.username,
+          password: this.password
+        });
+      }
     }
   }
 };

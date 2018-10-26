@@ -5,18 +5,23 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './registerServiceWorker'
-import ApolloClient from 'apollo-boost'
+
 import VueApollo from 'vue-apollo'
+import ApolloClient from 'apollo-boost'
 
 Vue.use(VueApollo);
 
+
+
+// const ApolloProvider = new vueApollo({defaultClient});
+
 export const defaultClient = new ApolloClient({
-   uri:'https://localhost:8080/graphql'
-})
+  uri: 'http://localhost:80/graphql'
+});
 
-const apolloProvider = new VueApollo ({ defaultClient});
-
+const apolloProvider = new VueApollo({defaultClient});
 Vue.config.productionTip = false;
+
 
 new Vue({
   provide: apolloProvider.provide(),

@@ -1,3 +1,11 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const createToken = (user, secret, expiresIn) =>{
+    const { username, password} = user;
+    return jwt.sign({ username, password}, secret, { expiresIn});
+}
+
 module.exports = {
     Query:{
         getUser:()=>null,
@@ -11,22 +19,25 @@ module.exports = {
             .sort({name:"desc"})
             return foods
         },
-        getExtraList: async (_,args,{Extra})=>{
-            const extras = await Extra.find({}).sort({name:"desc"}) 
-            return extras;
+        getSideList: async(_,args, {Side})=>{
+            const sides = await Side.find({})
+            .sort({name:"desc"})
+            return sides
         },
-        getSideList: async (_,args,{Side})=>{
-            const sides = await Side.find({}).sort({name:"desc"}) 
-            return sides;
+        getExtraList: async(_,args, {Extra})=>{
+            const extras = await Extra.find({})
+            .sort({name:"desc"})
+            return extras
         },
         getOrderList: async(_,args, {Order})=>{
             const orders = await Order.find({})
             .sort({client:"desc"})
             return orders
-        }
+        },
+
     },
     Mutation: {
-        singupUser: async (_, { username, password }, { User }) => {
+        signupUser: async (_, { username, password }, { User }) => {
             const user = await User.findOne({
                 username
             });
@@ -37,7 +48,18 @@ module.exports = {
                 username,
                 password
             }).save()
-            return newUser
+            return { token: createToke(newUser, procees.env.SECRET, "1hr")};
+        },
+        signinUser: async (_, { username, password }, { User }) => {
+            const user = await User.findOne({username});
+            if (!user) {
+                throw new Error('User not found');
+            }
+            const isValidPassword = await bcrypt.compare(password, user.password);
+            if(!isValidPassword){
+                throw new Error("Invalid Password")
+            }
+            return{ token: createToken(user, process.env.SECRET,"1hr")};
         },
         addDrink : async (_, {name, price}, {Drink}) =>{
             const drink = await Drink.findOne({name});
@@ -50,7 +72,29 @@ module.exports = {
             }).save()
             return newDrink
         }, 
-        addFood: async(_, { name, price,shift }, {Food}) => {
+        addSide : async (_, {name, price}, {Side}) =>{
+            const side = await Side.findOne({name});
+            if(side){
+                throw new Error('User already exists');
+            }
+            const newSide = await new Side({
+                name,
+                price
+            }).save()
+            return newSide
+        },
+        addExtra : async (_, {name, price}, {Extra}) =>{
+            const extra = await Extra.findOne({name});
+            if(extra){
+                throw new Error('User already exists');
+            }
+            const newExtra = await new Extra({
+                name,
+                price
+            }).save()
+            return newExtra
+        }, 
+        addFood: async(_, { name, price,shift}, {Food}) => {
             const food = await Food.findOne({name});
             if (food) {
                 throw new Error('Food already exists');
@@ -58,31 +102,15 @@ module.exports = {
             const newFood = await new Food({name,price, shift}).save()
             return newFood;
         },
-        addExtra: async(_, { name, price }, {Extra}) => {
-            const extra = await Extra.findOne({name});
-            if (extra) {
-                throw new Error('Extra already exists');
-            }
-            const newExtra = await new Extra({name,price}).save()
-            return newExtra;
-        },
-        addSide: async(_, { name, price }, {Side}) => {
-            const side = await Side.findOne({name});
-            if (side) {
-                throw new Error('Side already exists');
-            }
-            const newSide = await new Side({name,price}).save()
-            return newSide;
-        },
-        addOrder: async(_,{food, drink,total, client, employee, extra, side}, {Order}) =>{
+        addOrder: async(_,{food, drink, side, extra, total, client, employee}, {Order}) =>{
             const newOrder = await new Order({
                 food,
-                drink, 
+                drink,
+                side,
+                extra, 
                 total,
                 client,
-                employee,
-                extra,
-                side
+                employee
             }).save()
             return newOrder;
         }
