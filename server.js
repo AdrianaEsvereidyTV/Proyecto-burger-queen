@@ -40,8 +40,8 @@ const server = new ApolloServer({
 
 
 //Levantando el servidor
-server.listen({port: process.env.PORT ||4000}).then(({ url }) => {
+server.listen({port: process.env.PORT ||7070}).then(({ url }) => {
     console.log('Servidor activo', url);
 }).catch((error) => {
     console.log('error');
-})
+});

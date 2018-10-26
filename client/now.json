@@ -1,5 +1,5 @@
 {
-    "name": "burger-queen-app",
+    "name": "BurgerQueenApp",
     "type": "static",
     "static": {
       "public": "dist",
@@ -10,7 +10,7 @@
         }
       ]
     },
-    "alias": "burgerQ",
+    "alias": "BurgerQueenApp",
     "files": [
       "dist"
     ]
